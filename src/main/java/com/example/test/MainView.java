@@ -13,27 +13,29 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Route("main")
 public class MainView extends VerticalLayout {
-    MyCounterEntity myCounterEntity;
+
     public MainView() {
         add(new NativeLabel("Your code here"));
         IntegerField countField = new IntegerField();
-        myCounterEntity = new MyCounterEntity(0);
+        MyCounterEntity myCounterEntity = new MyCounterEntity(0);
         countField.setValue(myCounterEntity.getMyCounter());
 //        countField.setStepButtonsVisible(true);
         add(countField);
 
         Button button = new Button("Увеличить");
         button.addClickListener(clickEvent -> {
-            myCounterEntity.setMyCounter(1);
+            myCounterEntity.setMyCounter(myCounterEntity.getMyCounter() + 1);
             countField.setValue(myCounterEntity.getMyCounter());
+            System.out.println(myCounterEntity);
         });
         add(button);
 
         Button buttonSave = new Button("Сохранить");
         buttonSave.addClickListener(clickEvent -> {
-            myCounterEntity.setMyCounter(myCounterEntity.getMyCounter());
+            myCounterEntity.setMyCounter(countField.getValue());
+            System.out.println(myCounterEntity);
         });
         add(buttonSave);
-        System.out.println(buttonSave);
+
     }
 }

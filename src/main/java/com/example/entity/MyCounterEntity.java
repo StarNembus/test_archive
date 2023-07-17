@@ -1,9 +1,16 @@
 package com.example.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+import java.util.UUID;
 
 @Entity
 public class MyCounterEntity {
+    @Id
+    private UUID id = UUID.randomUUID();
+
+
     private int myCounter;
 
     public MyCounterEntity() {
@@ -21,10 +28,20 @@ public class MyCounterEntity {
         this.myCounter = myCounter;
     }
 
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
         return "MyCounterEntity{" +
-                "myCounter=" + myCounter +
+                "id=" + id +
+                ", myCounter=" + myCounter +
                 '}';
     }
+
 }
