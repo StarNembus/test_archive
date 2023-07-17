@@ -1,18 +1,23 @@
 package com.example.test;
 
-import com.example.entity.MyCounterEntity;
-import com.example.repositories.MyRepository;
+import com.example.test.entity.MyCounterEntity;
+import com.example.test.repositories.MyRepository;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.router.Route;
-
-import java.util.concurrent.atomic.AtomicInteger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 @Route("main")
 public class MainView extends VerticalLayout {
+    @Autowired
+    private MyRepository myRepository;
+
+    public MainView(MyRepository myRepository) {
+        this.myRepository = myRepository;
+    }
 
     public MainView() {
         add(new NativeLabel("Your code here"));
@@ -26,6 +31,7 @@ public class MainView extends VerticalLayout {
         button.addClickListener(clickEvent -> {
             myCounterEntity.setMyCounter(myCounterEntity.getMyCounter() + 1);
             countField.setValue(myCounterEntity.getMyCounter());
+            myRepository.save(myCounterEntity);
             System.out.println(myCounterEntity);
         });
         add(button);
@@ -33,6 +39,7 @@ public class MainView extends VerticalLayout {
         Button buttonSave = new Button("Сохранить");
         buttonSave.addClickListener(clickEvent -> {
             myCounterEntity.setMyCounter(countField.getValue());
+            myRepository.save(myCounterEntity);
             System.out.println(myCounterEntity);
         });
         add(buttonSave);
