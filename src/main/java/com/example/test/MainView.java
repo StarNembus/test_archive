@@ -10,6 +10,12 @@ import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
+/**
+ * Использование биндера считаю нецелесообразным, так как количество изменяемых переменных равно 1.
+ * И в случае, если пользователь будет ошибаться в воде значения, в числовом поле переменная постоянно
+ * будет обновляться, то есть постоянно обращение к БД.
+ * Было принято решение воспользоваться отдельной кнопокой для сохранения.
+ */
 @Route("main")
 public class MainView extends VerticalLayout {
     @Autowired
@@ -20,11 +26,9 @@ public class MainView extends VerticalLayout {
     }
 
     public MainView() {
-        add(new NativeLabel("Your code here"));
         IntegerField countField = new IntegerField();
         MyCounterEntity myCounterEntity = new MyCounterEntity(0);
         countField.setValue(myCounterEntity.getMyCounter());
-//        countField.setStepButtonsVisible(true);
         add(countField);
 
         Button button = new Button("Увеличить");
@@ -32,7 +36,6 @@ public class MainView extends VerticalLayout {
             myCounterEntity.setMyCounter(myCounterEntity.getMyCounter() + 1);
             countField.setValue(myCounterEntity.getMyCounter());
             myRepository.save(myCounterEntity);
-            System.out.println(myCounterEntity);
         });
         add(button);
 
@@ -40,7 +43,6 @@ public class MainView extends VerticalLayout {
         buttonSave.addClickListener(clickEvent -> {
             myCounterEntity.setMyCounter(countField.getValue());
             myRepository.save(myCounterEntity);
-            System.out.println(myCounterEntity);
         });
         add(buttonSave);
 
